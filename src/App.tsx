@@ -3,10 +3,11 @@ import axios from "axios";
 
 import { Drawer } from "@mui/material";
 import { CircularProgress } from "@mui/material";
-import Grid from "@mui/material";
+import { Grid } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import Badge from "@mui/material";
 import { Wrapper } from "./App.styles";
+import Item from "./item/Item";
 
 export type CartItemType = {
   id: number;
@@ -16,7 +17,7 @@ export type CartItemType = {
   price: number;
   title: string;
   amount: number;
-  rating: object;
+  rating: { rate: number; count: number };
 };
 const getProducts = async (url): Promise<CartItemType[]> => {
   const { data } = await axios(url);
@@ -27,11 +28,23 @@ function App() {
     "https://fakestoreapi.com/products",
     getProducts
   );
-  console.log(data);
+  const getTotalsItems = () => null;
+  const handleAddToCart = (clickedItem: CartItemType) => null;
+  const handleRemoveFromCart = () => null;
   // if (isLoading) return <CircularProgress />;
-  // if (error) return <div>Something went wrong...</div>;
+  if (error) return <div>Something went wrong...</div>;
 
-  return <h2>Hello World</h2>;
+  return (
+    <Wrapper>
+      <Grid container spacing={3}>
+        {data?.map((item) => (
+          <Grid item key={item.id} xs={12} sm={4}>
+            <Item item={item} handleAddToCart={handleAddToCart} />
+          </Grid>
+        ))}
+      </Grid>
+    </Wrapper>
+  );
 }
 
 export default App;
