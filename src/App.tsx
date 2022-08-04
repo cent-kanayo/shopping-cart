@@ -1,5 +1,5 @@
-import useSWR from "swr";
 import axios from "axios";
+import useSWRImmutable from "swr/immutable";
 
 import { Drawer } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -26,7 +26,7 @@ const getProducts = async (url): Promise<CartItemType[]> => {
   return data;
 };
 function App() {
-  const { data, error } = useSWR<CartItemType[]>(
+  const { data, error } = useSWRImmutable<CartItemType[]>(
     "https://fakestoreapi.com/products",
     getProducts,
     { revalidateIfStale: false, revalidateOnFocus: false }
