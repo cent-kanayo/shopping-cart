@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import useSWR from "swr";
+import axios from "axios";
 
+import { Drawer } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import Grid from "@mui/material";
+import { AddShoppingCart } from "@mui/icons-material";
+import Badge from "@mui/material";
+import { Wrapper } from "./App.styles";
+
+export type CartItemType = {
+  id: number;
+  category: string;
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+  amount: number;
+  rating: object;
+};
+const getProducts = async (url): Promise<CartItemType[]> => {
+  const { data } = await axios(url);
+  return data;
+};
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const { data, error } = useSWR<CartItemType[]>(
+    "https://fakestoreapi.com/products",
+    getProducts
   );
+  console.log(data);
+  // if (isLoading) return <CircularProgress />;
+  // if (error) return <div>Something went wrong...</div>;
+
+  return <h2>Hello World</h2>;
 }
 
 export default App;
